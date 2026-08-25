@@ -16,7 +16,7 @@
 
 依赖 git 和 go。
 
-默认情况下，编译脚本不会 clone [Xray-core](https://github.com/XTLS/Xray-core)，而是通过 Go modules 的 pseudo-version 将 Xray-core 固定到发布版本 `v26.7.28`。
+默认情况下，编译脚本不会 clone [Xray-core](https://github.com/XTLS/Xray-core)，而是保留 `github.com/xtls/xray-core` 导入路径，并通过 Go module `replace` 使用 `github.com/patterniha/xray-core` fork 的 `v0.0.0-20260824165107-efa586a0b7c4`。
 传入可选参数 `local` 时，会通过 Go module `replace` 改用已有的本地仓库 `../Xray-core`。
 
 ### 使用方式

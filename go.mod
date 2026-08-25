@@ -10,6 +10,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
+replace github.com/xtls/xray-core => github.com/patterniha/xray-core v0.0.0-20260824165107-efa586a0b7c4
+
 require (
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/apernet/quic-go v0.59.1-0.20260425001925-6c6cc9bcb716 // indirect

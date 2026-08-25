@@ -40,7 +40,7 @@ Compile script. It is recommended to always use this script to compile libXray. 
 
 depends on git and go.
 
-By default, the build script does not clone [Xray-core](https://github.com/XTLS/Xray-core). It uses Go modules and pins Xray-core to release tag `v26.7.28` through its pseudo-version.
+By default, the build script does not clone [Xray-core](https://github.com/XTLS/Xray-core). It keeps the `github.com/xtls/xray-core` import path and builds from the `github.com/patterniha/xray-core` fork at `v0.0.0-20260824165107-efa586a0b7c4` through a Go module `replace`.
 Pass the optional `local` argument to use an existing local checkout at `../Xray-core` through a Go module `replace`.
 
 ### Usage

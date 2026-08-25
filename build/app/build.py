@@ -8,8 +8,14 @@ from app.cmd import (
 
 LIBXRAY_MOD_NAME = "github.com/xtls/libxray"
 XRAY_CORE_MOD_NAME = "github.com/xtls/xray-core"
-# Go modules resolve the Xray-core v26.7.28 release tag through this version.
-DEFAULT_XRAY_CORE_VERSION = "v1.260327.1-0.20260728075948-5ca6f4b7d4dc"
+# Keep the public import path used by libXray, while building Xray-core from
+# the configured fork and revision.
+XRAY_CORE_REPLACE_MOD_NAME = os.environ.get(
+    "XRAY_CORE_REPOSITORY", "github.com/patterniha/xray-core"
+)
+XRAY_CORE_REPLACE_VERSION = os.environ.get(
+    "XRAY_CORE_VERSION", "v0.0.0-20260824165107-efa586a0b7c4"
+)
 LOCAL_XRAY_CORE_DIR_NAME = "Xray-core"
 
 
@@ -85,16 +91,17 @@ class Builder(object):
                 raise Exception("go mod edit replace failed")
         else:
             ret = subprocess.run(
-                ["go", "mod", "edit", f"-dropreplace={XRAY_CORE_MOD_NAME}"]
+                [
+                    "go",
+                    "mod",
+                    "edit",
+                    "-replace="
+                    f"{XRAY_CORE_MOD_NAME}={XRAY_CORE_REPLACE_MOD_NAME}@"
+                    f"{XRAY_CORE_REPLACE_VERSION}",
+                ]
             )
             if ret.returncode != 0:
-                raise Exception("go mod edit dropreplace failed")
-
-            ret = subprocess.run(
-                ["go", "get", f"{XRAY_CORE_MOD_NAME}@{DEFAULT_XRAY_CORE_VERSION}"]
-            )
-            if ret.returncode != 0:
-                raise Exception("go get xray-core failed")
+                raise Exception("go mod edit xray-core replace failed")
 
         ret = subprocess.run(
             [

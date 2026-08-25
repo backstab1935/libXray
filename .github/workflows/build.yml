@@ -12,6 +12,8 @@ concurrency:
 
 env:
   NDK_VERSION: r29
+  XRAY_CORE_REPOSITORY: github.com/patterniha/xray-core
+  XRAY_CORE_VERSION: v0.0.0-20260824165107-efa586a0b7c4
 
 jobs:
   build:
@@ -250,6 +252,16 @@ jobs:
           name: libxray-${{ matrix.artifact }}
           path: dist/${{ matrix.artifact }}/
           if-no-files-found: error
+          retention-days: 30
+
+      - name: Summarize artifact
+        shell: bash
+        run: |
+          {
+            echo "### libXray artifact"
+            echo "- Download name: libxray-${{ matrix.artifact }}"
+            echo "- Xray-core: ${{ env.XRAY_CORE_REPOSITORY }}@${{ env.XRAY_CORE_VERSION }}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   release:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
